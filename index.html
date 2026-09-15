@@ -11,7 +11,7 @@
   <style>
     :root {
       --bg-dark: #0b090a;
-      --bg-card: rgba(22, 18, 24, 0.65);
+      --bg-card: rgba(22, 18, 24, 0.7);
       --gold: #f3c969;
       --gold-glow: rgba(243, 201, 105, 0.4);
       --rose: #e07a86;
@@ -37,8 +37,6 @@
       font-family: var(--font-body);
       overflow-x: hidden;
       line-height: 1.6;
-      selection-background-color: var(--rose);
-      selection-color: #fff;
     }
 
     /* Ambient Canvas */
@@ -65,7 +63,7 @@
       box-shadow: 0 0 10px var(--gold-glow);
     }
 
-    /* Floating Music & Sound Toggle */
+    /* Floating Music Toggle */
     .music-btn {
       position: fixed;
       bottom: 24px;
@@ -178,7 +176,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 24px;
-      letter-spacing: 0.5px;
     }
 
     .hero-tagline {
@@ -233,6 +230,9 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: #151118;
       transition: transform 0.5s ease, box-shadow 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .story-media:hover {
@@ -253,7 +253,7 @@
       position: absolute;
       top: 18px;
       right: 18px;
-      background: rgba(10, 10, 15, 0.7);
+      background: rgba(10, 10, 15, 0.75);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.2);
       color: var(--gold);
@@ -263,6 +263,7 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       font-weight: 600;
+      z-index: 5;
     }
 
     .story-content {
@@ -330,7 +331,7 @@
       height: 480px;
     }
 
-    /* Interactive Art gallery / Parallax Wall */
+    /* ==================== FULL IMAGE DISPLAY FOR CHAPTER 4 ==================== */
     .art-section {
       text-align: center;
       background: radial-gradient(circle at center, rgba(35, 20, 35, 0.6) 0%, transparent 70%);
@@ -338,39 +339,57 @@
 
     .gallery-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
       margin-top: 40px;
+      align-items: start;
     }
 
     .art-card {
       background: var(--bg-card);
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
       backdrop-filter: blur(16px);
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     .art-card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-8px);
       border-color: var(--gold);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px var(--gold-glow);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.8), 0 0 25px var(--gold-glow);
+    }
+
+    /* Frame container that displays image fully with zero cut-off */
+    .art-frame {
+      width: 100%;
+      background: #080608;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 12px;
     }
 
     .art-card img {
       width: 100%;
-      height: 380px;
-      object-fit: cover;
+      height: auto;
+      max-height: 620px;
+      object-fit: contain; /* Prevents top and bottom cropping */
       display: block;
+      border-radius: 16px;
     }
 
     .art-caption {
-      padding: 18px 15px;
-      font-size: 0.95rem;
+      padding: 20px 18px;
+      font-size: 1rem;
       color: var(--text-main);
       font-weight: 500;
+      background: rgba(18, 14, 20, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     /* Interactive Jhumka Charm Clicker */
@@ -452,7 +471,6 @@
       margin-top: 30px;
     }
 
-    /* Floating Heart/Jhumka Animation when clicked */
     .burst-particle {
       position: fixed;
       pointer-events: none;
@@ -472,7 +490,6 @@
       }
     }
 
-    /* Scroll Reveal Classes */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
@@ -484,7 +501,6 @@
       transform: translateY(0);
     }
 
-    /* Responsive */
     @media (max-width: 900px) {
       .story-grid {
         grid-template-columns: 1fr;
@@ -496,6 +512,12 @@
       .story-media video,
       .story-media img {
         max-height: 440px;
+      }
+      .gallery-cards {
+        grid-template-columns: 1fr;
+      }
+      .art-card img {
+        max-height: 520px;
       }
       .interactive-box {
         padding: 35px 20px;
@@ -514,7 +536,7 @@
   <!-- Scroll Progress -->
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- Audio Toggle Button (Web Audio Ambient Lo-Fi Synth) -->
+  <!-- Audio Toggle Button -->
   <button class="music-btn paused" id="musicToggle" aria-label="Toggle Romantic Melody">
     <div class="music-waves">
       <span></span><span></span><span></span>
@@ -522,10 +544,9 @@
     <span id="musicLabel">Play Ishuuuu's Melody</span>
   </button>
 
-  <!-- ==================== HERO SECTION ==================== -->
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="container">
-      <!-- Jhumka SVG Illustration -->
       <svg class="jhumka-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="32" cy="10" r="4" fill="#f3c969"/>
         <path d="M32 14V22" stroke="#f3c969" stroke-width="2.5" stroke-linecap="round"/>
@@ -557,32 +578,28 @@
     </div>
   </section>
 
-  <!-- ==================== CHAPTER 1: THE SILVER SWAY & PLAYFUL SMILE ==================== -->
+  <!-- CHAPTER 1 -->
   <section id="chapter1">
     <div class="container">
       <div class="story-grid reveal">
         
-        <!-- Video Showcase -->
         <div class="dual-media">
           <div class="story-media">
             <span class="media-badge">✨ Playful Vibes</span>
-            <video autoplay muted loop playsinline poster="video1_poster.jpg">
+            <video autoplay muted loop playsinline>
+              <source src="WhatsApp Video 2026-09-15 at 2.20.02 PM.mp4" type="video/mp4">
               <source src="video1.mp4" type="video/mp4">
-              <!-- Fallback -->
-              <img src="image1.jpg" alt="Ishuuuu smiling with jhumka">
             </video>
           </div>
           <div class="story-media">
             <span class="media-badge">🌙 That Look</span>
-            <video autoplay muted loop playsinline poster="video2_poster.jpg">
+            <video autoplay muted loop playsinline>
+              <source src="WhatsApp Video 2026-09-15 at 2.20.01 PM (1).mp4" type="video/mp4">
               <source src="video2.mp4" type="video/mp4">
-              <!-- Fallback -->
-              <img src="image2.jpg" alt="Ishuuuu playful glance">
             </video>
           </div>
         </div>
 
-        <!-- Poetic Prose -->
         <div class="story-content">
           <div class="chapter-tag">Chapter 01 • The Sparkle</div>
           <h2 class="story-title">When You Turn Your Head & Smile</h2>
@@ -594,7 +611,7 @@
             वो जब मुस्कुराती है, तो सारा समां रंगीन लगता है।"
           </div>
           <p class="story-text">
-            You always say how much you adore traditional earrings, but you never realize how they only find their true beauty when they get to rest beside your cheeks.
+            You always say how much you adore traditional earrings, but they only find their true grace when resting beside your curls.
           </p>
         </div>
 
@@ -602,24 +619,22 @@
     </div>
   </section>
 
-  <!-- ==================== CHAPTER 2: SUNSHINE & CURLS ==================== -->
+  <!-- CHAPTER 2 -->
   <section id="chapter2">
     <div class="container">
       <div class="story-grid reverse reveal">
         
-        <!-- Sunshine Flower Video & Flower Photo -->
         <div class="dual-media">
           <div class="story-media">
             <span class="media-badge">☀️ Golden Hour</span>
-            <video autoplay muted loop playsinline poster="video3_poster.jpg">
+            <video autoplay muted loop playsinline>
+              <source src="WhatsApp Video 2026-09-15 at 2.20.01 PM.mp4" type="video/mp4">
               <source src="video3.mp4" type="video/mp4">
-              <!-- Fallback -->
-              <img src="image3.jpg" alt="Ishuuuu in sunshine with flower in hair">
             </video>
           </div>
           <div class="story-media">
             <span class="media-badge">🌸 Blossom</span>
-            <img src="image3.jpg" alt="Ishuuuu smiling under blooming trees">
+            <img src="WhatsApp Image 2026-09-15 at 2.19.43 PM (2).jpeg" alt="Ishuuuu smiling under blooming trees" onerror="this.src='image3.jpg'">
           </div>
         </div>
 
@@ -627,14 +642,14 @@
           <div class="chapter-tag">Chapter 02 • Curls & Sunshine</div>
           <h2 class="story-title">A Flower in Your Wild Curls</h2>
           <p class="story-text">
-            Golden sunlight dancing through your curly hair, a bright yellow flower tucked gently behind your ear, and that genuine, radiating smile.
+            Golden sunlight dancing through your soft curls, a bright yellow flower tucked gently behind your ear, and that radiant smile.
           </p>
           <div class="story-shayari">
             "ज़ुल्फ़ों में उसकी जैसे धूप की कोई किरण उलझ गई हो,<br>
             फूल भी शर्मा जाए ऐसी सादगी से वो सज गई हो।"
           </div>
           <p class="story-text">
-            In red kurtis, maroon tops, or effortless casuals—nature itself seems to pause and bloom around you.
+            Every season seems to bloom brighter simply because you're in it.
           </p>
         </div>
 
@@ -642,7 +657,7 @@
     </div>
   </section>
 
-  <!-- ==================== CHAPTER 3: NIGHT LIGHTS & TIMELESS ROYALTY ==================== -->
+  <!-- CHAPTER 3 -->
   <section id="chapter3">
     <div class="container">
       <div class="story-grid reveal">
@@ -650,26 +665,26 @@
         <div class="dual-media">
           <div class="story-media">
             <span class="media-badge">🪞 Royal Reflection</span>
-            <img src="image1.jpg" alt="Ishuuuu mirror selfie in cream traditional outfit">
+            <img src="WhatsApp Image 2026-09-15 at 2.19.44 PM (1).jpeg" alt="Ishuuuu mirror selfie" onerror="this.src='image1.jpg'">
           </div>
           <div class="story-media">
             <span class="media-badge">✨ Starlit Night</span>
-            <img src="image2.jpg" alt="Ishuuuu in black and gold traditional attire under fairy lights">
+            <img src="WhatsApp Image 2026-09-15 at 2.19.44 PM.jpg" alt="Ishuuuu under fairy lights" onerror="this.src='image2.jpg'">
           </div>
         </div>
 
         <div class="story-content">
           <div class="chapter-tag">Chapter 03 • Royal Elegance</div>
-          <h2 class="story-title">Fairy Lights & Starlit Nights</h2>
+          <h2 class="story-title">Fairy Lights & Timeless Elegance</h2>
           <p class="story-text">
-            Whether it’s the quiet grace of a mirror reflection in embroidered ivory or the regal grandeur of black-and-gold against a backdrop of glowing fairy lights, you carry an aura that is nothing short of breathtaking.
+            Whether it’s the quiet grace of a mirror reflection in embroidered ivory or the royal aura of black-and-gold beneath warm fairy lights, you bring effortless elegance everywhere.
           </p>
           <div class="story-shayari">
             "हजारों सितारों की रोशनी भी फीकी पड़ जाए,<br>
             जब वो रात के आंगन में काली पोशाक में मुस्कुराए।"
           </div>
           <p class="story-text">
-            Every glance, every pose, every subtle turn tells a story of unmatched poise and elegance.
+            Every glance and every turn tells a story of pure poise.
           </p>
         </div>
 
@@ -677,30 +692,34 @@
     </div>
   </section>
 
-  <!-- ==================== CHAPTER 4: GHIBLI / ANIME STORYBOOK ==================== -->
+  <!-- CHAPTER 4: FULL UNCLIPPED ART DISPLAY -->
   <section class="art-section" id="chapter4">
     <div class="container">
       <div class="chapter-tag reveal" style="justify-content: center;">Chapter 04 • In Every Universe</div>
       <h2 class="story-title reveal">Like Art Brought to Life ✨</h2>
       <p class="story-text reveal" style="max-width: 650px; margin: 0 auto 30px;">
-        If our story were painted by Miyazaki or captured in timeless studio frames, you would still be the masterpiece at the very center of it all.
+        Every detail, from the tassels in the background to the gaze that captures every heartbeat, fully framed and preserved forever.
       </p>
 
       <div class="gallery-cards reveal">
         
-        <!-- Art Card 1: Adoration -->
+        <!-- Art Card 1: Full Proposal Art -->
         <div class="art-card">
-          <img src="image4.jpg" alt="Anime boy looking lovingly up at traditional dressed girl">
+          <div class="art-frame">
+            <img src="WhatsApp Image 2026-09-15 at 2.19.43 PM (1).jpeg" alt="Anime proposal art" onerror="this.src='image4.jpg'">
+          </div>
           <div class="art-caption">
-            "Looking up at you with the same awe, every single day."
+            "Looking up at you with that same quiet adoration, every single day."
           </div>
         </div>
 
-        <!-- Art Card 2: Looking back in fairy lights -->
+        <!-- Art Card 2: Full Looking Back Art -->
         <div class="art-card">
-          <img src="image5.jpg" alt="Anime girl looking back with long curly hair and jhumkas">
+          <div class="art-frame">
+            <img src="WhatsApp Image 2026-09-15 at 2.19.43 PM.jpeg" alt="Anime girl looking back with jhumkas" onerror="this.src='image5.jpg'">
+          </div>
           <div class="art-caption">
-            "That glance over the shoulder that makes time stand still."
+            "That glance over the shoulder that makes time stand completely still."
           </div>
         </div>
 
@@ -725,7 +744,7 @@
     </div>
   </section>
 
-  <!-- ==================== FINALE: A LETTER FROM THE HEART ==================== -->
+  <!-- FINALE -->
   <section class="finale" id="finale">
     <div class="container">
       <div class="letter-card reveal">
@@ -752,9 +771,9 @@
     </div>
   </section>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- JAVASCRIPT -->
   <script>
-    // --- 1. AMBIENT PARTICLES CANVAS (Golden Stardust & Rose Petals) ---
+    // 1. Ambient Background Particles
     const canvas = document.getElementById('ambientCanvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -813,7 +832,7 @@
     }
     animateParticles();
 
-    // --- 2. SCROLL PROGRESS & INTERSECTION OBSERVER ---
+    // 2. Scroll Progress & Reveal
     window.addEventListener('scroll', () => {
       const winScroll = document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -831,17 +850,16 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // --- 3. WEB AUDIO API LO-FI ROMANTIC MELODY SYNTH ---
-    // Generates a soft, dreamy ambient kalimba / electric piano progression: Cmaj7 - Am7 - Fmaj7 - G
+    // 3. Web Audio Synth
     let audioCtx = null;
     let isPlaying = false;
     let musicInterval = null;
 
     const chords = [
-      [261.63, 329.63, 392.00, 493.88], // Cmaj7 (C4, E4, G4, B4)
-      [220.00, 261.63, 329.63, 392.00], // Am7   (A3, C4, E4, G4)
-      [174.61, 220.00, 261.63, 329.63], // Fmaj7 (F3, A3, C4, E4)
-      [196.00, 246.94, 293.66, 392.00]  // G7    (G3, B3, D4, G4)
+      [261.63, 329.63, 392.00, 493.88],
+      [220.00, 261.63, 329.63, 392.00],
+      [174.61, 220.00, 261.63, 329.63],
+      [196.00, 246.94, 293.66, 392.00]
     ];
 
     function playSoftNote(freq, time, duration = 1.6) {
@@ -869,11 +887,10 @@
       const chord = chords[currentChordIndex];
       const now = audioCtx.currentTime;
 
-      // Arpeggiate chord notes softly
       chord.forEach((freq, idx) => {
         playSoftNote(freq, now + idx * 0.35, 2.2);
         if (Math.random() > 0.5) {
-          playSoftNote(freq * 2, now + idx * 0.35 + 0.15, 1.2); // Bell harmonic sparkle
+          playSoftNote(freq * 2, now + idx * 0.35 + 0.15, 1.2);
         }
       });
 
@@ -904,7 +921,7 @@
       }
     });
 
-    // --- 4. INTERACTIVE COMPLIMENTS & FLOATING PARTICLES ---
+    // 4. Interactive Burst & Messages
     const compliments = [
       "Tujhe Jhumke Pasand Hain, Aur Mujhe Jhumke Me Tu! 💖",
       "That flower in your curly hair is the prettiest thing ever 🌸",
@@ -926,7 +943,6 @@
         compText.style.opacity = 1;
       }, 200);
 
-      // Create burst particles (Jhumkas, hearts, sparkles)
       const symbols = ['✨', '💖', '🌸', '💫', '🪞', '⭐'];
       const rect = blushBtn.getBoundingClientRect();
       const originX = rect.left + rect.width / 2;
