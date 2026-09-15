@@ -1,1 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Ishuuuu ✨ | Tujhe Jhumke Pasand Hai...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0b090a;
+      --bg-card: rgba(22, 18, 24, 0.65);
+      --gold: #f3c969;
+      --gold-glow: rgba(243, 201, 105, 0.4);
+      --rose: #e07a86;
+      --silver: #e2e8f0;
+      --text-main: #f8f9fa;
+      --text-muted: #c9b8c7;
+      --font-serif: 'Rozha One', serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-title: 'Cinzel Decorative', serif;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      line-height: 1.6;
+      selection-background-color: var(--rose);
+      selection-color: #fff;
+    }
+
+    /* Ambient Canvas */
+    #ambientCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Progress Indicator */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--rose), var(--silver));
+      width: 0%;
+      z-index: 999;
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    /* Floating Music & Sound Toggle */
+    .music-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      background: rgba(30, 20, 30, 0.85);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 20px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 15px var(--gold-glow);
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .music-btn:hover {
+      transform: scale(1.05);
+      background: var(--gold);
+      color: var(--bg-dark);
+    }
+
+    .music-waves {
+      display: flex;
+      align-items: flex-end;
+      height: 14px;
+      gap: 3px;
+    }
+
+    .music-waves span {
+      width: 3px;
+      background: currentColor;
+      border-radius: 2px;
+      animation: wave 1s ease infinite alternate;
+    }
+
+    .music-waves span:nth-child(2) { animation-delay: 0.2s; height: 10px; }
+    .music-waves span:nth-child(3) { animation-delay: 0.4s; height: 14px; }
+    .music-waves span:nth-child(1) { height: 6px; }
+
+    .paused .music-waves span {
+      animation: none;
+      height: 4px;
+    }
+
+    @keyframes wave {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* Scrollytelling Sections */
+    section {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      padding: 80px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+
+    .jhumka-icon {
+      width: 65px;
+      height: 65px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 12px var(--gold-glow));
+      animation: sway 3s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+
+    @keyframes sway {
+      0% { transform: rotate(-10deg); }
+      100% { transform: rotate(10deg); }
+    }
+
+    .hero-sub {
+      font-family: var(--font-script);
+      font-size: 2.8rem;
+      color: var(--rose);
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(224, 122, 134, 0.4);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 1.25;
+      background: linear-gradient(135deg, #fff 20%, var(--gold) 60%, var(--rose) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-tagline {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 35px;
+      font-weight: 300;
+    }
+
+    .scroll-hint {
+      font-size: 0.85rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.8;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(8px); }
+      60% { transform: translateY(4px); }
+    }
+
+    /* Story Card Layouts */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .story-grid.reverse {
+      direction: rtl;
+    }
+
+    .story-grid.reverse .story-content, 
+    .story-grid.reverse .story-media {
+      direction: ltr;
+    }
+
+    .story-media {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(243, 201, 105, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #151118;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .story-media:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px var(--gold-glow);
+    }
+
+    .story-media video,
+    .story-media img {
+      width: 100%;
+      height: 100%;
+      max-height: 580px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--gold);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .story-content {
+      padding: 20px;
+    }
+
+    .chapter-tag {
+      font-size: 0.85rem;
+      color: var(--rose);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chapter-tag::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--rose);
+    }
+
+    .story-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: #fff;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .story-shayari {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--gold);
+      border-left: 3px solid var(--gold);
+      padding-left: 18px;
+      margin: 24px 0;
+      line-height: 1.7;
+      background: linear-gradient(90deg, rgba(243, 201, 105, 0.08), transparent);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .story-text {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    /* Dual Media Display */
+    .dual-media {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .dual-media .story-media video,
+    .dual-media .story-media img {
+      height: 480px;
+    }
+
+    /* Interactive Art gallery / Parallax Wall */
+    .art-section {
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(35, 20, 35, 0.6) 0%, transparent 70%);
+    }
+
+    .gallery-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .art-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .art-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--gold);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px var(--gold-glow);
+    }
+
+    .art-card img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .art-caption {
+      padding: 18px 15px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Interactive Jhumka Charm Clicker */
+    .interactive-box {
+      background: linear-gradient(145deg, rgba(30, 20, 35, 0.8), rgba(15, 12, 18, 0.9));
+      border: 1px solid rgba(243, 201, 105, 0.3);
+      border-radius: 30px;
+      padding: 50px 30px;
+      text-align: center;
+      margin: 60px auto 20px;
+      max-width: 800px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(224, 122, 134, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .interactive-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(243, 201, 105, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .interactive-btn {
+      background: linear-gradient(135deg, var(--gold), #d49c24);
+      color: #0d090e;
+      font-weight: 700;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 25px;
+      box-shadow: 0 8px 25px rgba(243, 201, 105, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .interactive-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 12px 35px rgba(243, 201, 105, 0.6);
+    }
+
+    .compliments-display {
+      min-height: 50px;
+      margin-top: 25px;
+      font-family: var(--font-script);
+      font-size: 2.2rem;
+      color: var(--rose);
+      text-shadow: 0 0 15px rgba(224, 122, 134, 0.5);
+      transition: opacity 0.3s ease;
+    }
+
+    /* Finale Letter */
+    .finale {
+      text-align: center;
+      padding-bottom: 120px;
+    }
+
+    .letter-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(243, 201, 105, 0.25);
+      border-radius: 28px;
+      padding: 60px 40px;
+      max-width: 750px;
+      margin: 0 auto;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .letter-signature {
+      font-family: var(--font-script);
+      font-size: 3rem;
+      color: var(--gold);
+      margin-top: 30px;
+    }
+
+    /* Floating Heart/Jhumka Animation when clicked */
+    .burst-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatUpFade 1.4s ease-out forwards;
+      font-size: 24px;
+    }
+
+    @keyframes floatUpFade {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.6) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(var(--tr));
+      }
+    }
+
+    /* Scroll Reveal Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .story-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+      .dual-media {
+        grid-template-columns: 1fr;
+      }
+      .story-media video,
+      .story-media img {
+        max-height: 440px;
+      }
+      .interactive-box {
+        padding: 35px 20px;
+      }
+      .letter-card {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Golden Canvas -->
+  <canvas id="ambientCanvas"></canvas>
+
+  <!-- Scroll Progress -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Audio Toggle Button (Web Audio Ambient Lo-Fi Synth) -->
+  <button class="music-btn paused" id="musicToggle" aria-label="Toggle Romantic Melody">
+    <div class="music-waves">
+      <span></span><span></span><span></span>
+    </div>
+    <span id="musicLabel">Play Ishuuuu's Melody</span>
+  </button>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero">
+    <div class="container">
+      <!-- Jhumka SVG Illustration -->
+      <svg class="jhumka-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="10" r="4" fill="#f3c969"/>
+        <path d="M32 14V22" stroke="#f3c969" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M16 34C16 25.1634 23.1634 22 32 22C40.8366 22 48 25.1634 48 34H16Z" fill="url(#jhumkaGrad)"/>
+        <circle cx="20" cy="40" r="2.5" fill="#f3c969"/>
+        <circle cx="26" cy="42" r="2.5" fill="#f3c969"/>
+        <circle cx="32" cy="43" r="3" fill="#f3c969"/>
+        <circle cx="38" cy="42" r="2.5" fill="#f3c969"/>
+        <circle cx="44" cy="40" r="2.5" fill="#f3c969"/>
+        <path d="M20 34V38M26 34V40M32 34V41M38 34V40M44 34V38" stroke="#f3c969" stroke-width="1.5"/>
+        <defs>
+          <linearGradient id="jhumkaGrad" x1="16" y1="22" x2="48" y2="34" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#f3c969"/>
+            <stop offset="1" stop-color="#e07a86"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="hero-sub">Ek Khoobsurat Ehsaas...</div>
+      <h1 class="hero-title">Tujhe Jhumke Pasand Hain,<br>Aur Mujhe Jhumke Mein Tu.</h1>
+      <p class="hero-tagline">
+        To the girl whose smile sparkles brighter than polished silver, and whose laughter turns ordinary moments into poetry.
+      </p>
+
+      <div class="scroll-hint">
+        <span>Scroll to explore our story</span>
+        <span>↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHAPTER 1: THE SILVER SWAY & PLAYFUL SMILE ==================== -->
+  <section id="chapter1">
+    <div class="container">
+      <div class="story-grid reveal">
+        
+        <!-- Video Showcase -->
+        <div class="dual-media">
+          <div class="story-media">
+            <span class="media-badge">✨ Playful Vibes</span>
+            <video autoplay muted loop playsinline poster="video1_poster.jpg">
+              <source src="video1.mp4" type="video/mp4">
+              <!-- Fallback -->
+              <img src="image1.jpg" alt="Ishuuuu smiling with jhumka">
+            </video>
+          </div>
+          <div class="story-media">
+            <span class="media-badge">🌙 That Look</span>
+            <video autoplay muted loop playsinline poster="video2_poster.jpg">
+              <source src="video2.mp4" type="video/mp4">
+              <!-- Fallback -->
+              <img src="image2.jpg" alt="Ishuuuu playful glance">
+            </video>
+          </div>
+        </div>
+
+        <!-- Poetic Prose -->
+        <div class="story-content">
+          <div class="chapter-tag">Chapter 01 • The Sparkle</div>
+          <h2 class="story-title">When You Turn Your Head & Smile</h2>
+          <p class="story-text">
+            There is something magical about the way your silver mirror jhumka catches the light every time you tilt your head or laugh at a silly joke. 
+          </p>
+          <div class="story-shayari">
+            "कांच के झुमके में अक्स उसका और भी हसीन लगता है,<br>
+            वो जब मुस्कुराती है, तो सारा समां रंगीन लगता है।"
+          </div>
+          <p class="story-text">
+            You always say how much you adore traditional earrings, but you never realize how they only find their true beauty when they get to rest beside your cheeks.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHAPTER 2: SUNSHINE & CURLS ==================== -->
+  <section id="chapter2">
+    <div class="container">
+      <div class="story-grid reverse reveal">
+        
+        <!-- Sunshine Flower Video & Flower Photo -->
+        <div class="dual-media">
+          <div class="story-media">
+            <span class="media-badge">☀️ Golden Hour</span>
+            <video autoplay muted loop playsinline poster="video3_poster.jpg">
+              <source src="video3.mp4" type="video/mp4">
+              <!-- Fallback -->
+              <img src="image3.jpg" alt="Ishuuuu in sunshine with flower in hair">
+            </video>
+          </div>
+          <div class="story-media">
+            <span class="media-badge">🌸 Blossom</span>
+            <img src="image3.jpg" alt="Ishuuuu smiling under blooming trees">
+          </div>
+        </div>
+
+        <div class="story-content">
+          <div class="chapter-tag">Chapter 02 • Curls & Sunshine</div>
+          <h2 class="story-title">A Flower in Your Wild Curls</h2>
+          <p class="story-text">
+            Golden sunlight dancing through your curly hair, a bright yellow flower tucked gently behind your ear, and that genuine, radiating smile.
+          </p>
+          <div class="story-shayari">
+            "ज़ुल्फ़ों में उसकी जैसे धूप की कोई किरण उलझ गई हो,<br>
+            फूल भी शर्मा जाए ऐसी सादगी से वो सज गई हो।"
+          </div>
+          <p class="story-text">
+            In red kurtis, maroon tops, or effortless casuals—nature itself seems to pause and bloom around you.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHAPTER 3: NIGHT LIGHTS & TIMELESS ROYALTY ==================== -->
+  <section id="chapter3">
+    <div class="container">
+      <div class="story-grid reveal">
+        
+        <div class="dual-media">
+          <div class="story-media">
+            <span class="media-badge">🪞 Royal Reflection</span>
+            <img src="image1.jpg" alt="Ishuuuu mirror selfie in cream traditional outfit">
+          </div>
+          <div class="story-media">
+            <span class="media-badge">✨ Starlit Night</span>
+            <img src="image2.jpg" alt="Ishuuuu in black and gold traditional attire under fairy lights">
+          </div>
+        </div>
+
+        <div class="story-content">
+          <div class="chapter-tag">Chapter 03 • Royal Elegance</div>
+          <h2 class="story-title">Fairy Lights & Starlit Nights</h2>
+          <p class="story-text">
+            Whether it’s the quiet grace of a mirror reflection in embroidered ivory or the regal grandeur of black-and-gold against a backdrop of glowing fairy lights, you carry an aura that is nothing short of breathtaking.
+          </p>
+          <div class="story-shayari">
+            "हजारों सितारों की रोशनी भी फीकी पड़ जाए,<br>
+            जब वो रात के आंगन में काली पोशाक में मुस्कुराए।"
+          </div>
+          <p class="story-text">
+            Every glance, every pose, every subtle turn tells a story of unmatched poise and elegance.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHAPTER 4: GHIBLI / ANIME STORYBOOK ==================== -->
+  <section class="art-section" id="chapter4">
+    <div class="container">
+      <div class="chapter-tag reveal" style="justify-content: center;">Chapter 04 • In Every Universe</div>
+      <h2 class="story-title reveal">Like Art Brought to Life ✨</h2>
+      <p class="story-text reveal" style="max-width: 650px; margin: 0 auto 30px;">
+        If our story were painted by Miyazaki or captured in timeless studio frames, you would still be the masterpiece at the very center of it all.
+      </p>
+
+      <div class="gallery-cards reveal">
+        
+        <!-- Art Card 1: Adoration -->
+        <div class="art-card">
+          <img src="image4.jpg" alt="Anime boy looking lovingly up at traditional dressed girl">
+          <div class="art-caption">
+            "Looking up at you with the same awe, every single day."
+          </div>
+        </div>
+
+        <!-- Art Card 2: Looking back in fairy lights -->
+        <div class="art-card">
+          <img src="image5.jpg" alt="Anime girl looking back with long curly hair and jhumkas">
+          <div class="art-caption">
+            "That glance over the shoulder that makes time stand still."
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interactive Compliments Box -->
+      <div class="interactive-box reveal">
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--gold); margin-bottom: 12px;">
+          Send a Jhumka & Love to Ishuuuu 💖
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Click the button below to shower her with sparkles and heartfelt reminders.
+        </p>
+        <div class="compliments-display" id="complimentText">
+          "You make every single day brighter, Ishuuu! ✨"
+        </div>
+        <button class="interactive-btn" id="blushBtn">
+          Drop a Jhumka & Sparkle ✨
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FINALE: A LETTER FROM THE HEART ==================== -->
+  <section class="finale" id="finale">
+    <div class="container">
+      <div class="letter-card reveal">
+        <div class="chapter-tag" style="justify-content: center;">Forever & Always</div>
+        <h2 class="story-title" style="color: var(--gold); margin-bottom: 24px;">To My Dearest Ishuuuu,</h2>
+        
+        <p class="story-text" style="color: #fff; font-size: 1.15rem; font-style: italic; margin-bottom: 20px;">
+          "They say jewelry adds charm to a person, but with you, it's the other way around. The jhumkas dance because you smile. The flowers look brighter because they get to touch your curls. And the world feels so much warmer just having you in it."
+        </p>
+
+        <p class="story-text">
+          Thank you for being the sweetest, most adorably chaotic, effortlessly graceful, and endlessly loving person. 
+        </p>
+
+        <div class="story-shayari" style="max-width: 500px; margin: 30px auto; border-left: none; border-bottom: 2px solid var(--gold); border-top: 2px solid var(--gold); padding: 15px 0;">
+          तुझे झुमके पसंद हैं...<br>
+          और मुझे झुमकों में तू! ❤️
+        </div>
+
+        <div class="letter-signature">
+          With All My Love ❤️
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // --- 1. AMBIENT PARTICLES CANVAS (Golden Stardust & Rose Petals) ---
+    const canvas = document.getElementById('ambientCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2.5 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = -Math.random() * 0.8 - 0.2;
+        this.alpha = Math.random() * 0.6 + 0.2;
+        this.color = Math.random() > 0.4 ? '243, 201, 105' : '224, 122, 134';
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.y < 0 || this.x < 0 || this.x > width) {
+          this.reset();
+          this.y = height + 10;
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    for (let i = 0; i < 55; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // --- 2. SCROLL PROGRESS & INTERSECTION OBSERVER ---
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- 3. WEB AUDIO API LO-FI ROMANTIC MELODY SYNTH ---
+    // Generates a soft, dreamy ambient kalimba / electric piano progression: Cmaj7 - Am7 - Fmaj7 - G
+    let audioCtx = null;
+    let isPlaying = false;
+    let musicInterval = null;
+
+    const chords = [
+      [261.63, 329.63, 392.00, 493.88], // Cmaj7 (C4, E4, G4, B4)
+      [220.00, 261.63, 329.63, 392.00], // Am7   (A3, C4, E4, G4)
+      [174.61, 220.00, 261.63, 329.63], // Fmaj7 (F3, A3, C4, E4)
+      [196.00, 246.94, 293.66, 392.00]  // G7    (G3, B3, D4, G4)
+    ];
+
+    function playSoftNote(freq, time, duration = 1.6) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, time);
+
+      gain.gain.setValueAtTime(0.001, time);
+      gain.gain.exponentialRampToValueAtTime(0.08, time + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    let currentChordIndex = 0;
+    function playMelodyLoop() {
+      if (!isPlaying) return;
+      const chord = chords[currentChordIndex];
+      const now = audioCtx.currentTime;
+
+      // Arpeggiate chord notes softly
+      chord.forEach((freq, idx) => {
+        playSoftNote(freq, now + idx * 0.35, 2.2);
+        if (Math.random() > 0.5) {
+          playSoftNote(freq * 2, now + idx * 0.35 + 0.15, 1.2); // Bell harmonic sparkle
+        }
+      });
+
+      currentChordIndex = (currentChordIndex + 1) % chords.length;
+    }
+
+    const musicBtn = document.getElementById('musicToggle');
+    const musicLabel = document.getElementById('musicLabel');
+
+    musicBtn.addEventListener('click', () => {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        musicBtn.classList.remove('paused');
+        musicLabel.textContent = "Playing Romantic Melody ✨";
+        playMelodyLoop();
+        musicInterval = setInterval(playMelodyLoop, 2400);
+      } else {
+        musicBtn.classList.add('paused');
+        musicLabel.textContent = "Play Ishuuuu's Melody";
+        clearInterval(musicInterval);
+      }
+    });
+
+    // --- 4. INTERACTIVE COMPLIMENTS & FLOATING PARTICLES ---
+    const compliments = [
+      "Tujhe Jhumke Pasand Hain, Aur Mujhe Jhumke Me Tu! 💖",
+      "That flower in your curly hair is the prettiest thing ever 🌸",
+      "Your smile literally lights up the entire room ✨",
+      "The way your eyes twinkle in every laugh is pure magic 💫",
+      "Looking like pure royalty under those fairy lights 👑",
+      "In every lifetime & every art style, it’s always you ❤️"
+    ];
+    let compIndex = 0;
+
+    const blushBtn = document.getElementById('blushBtn');
+    const compText = document.getElementById('complimentText');
+
+    blushBtn.addEventListener('click', (e) => {
+      compIndex = (compIndex + 1) % compliments.length;
+      compText.style.opacity = 0;
+      setTimeout(() => {
+        compText.textContent = compliments[compIndex];
+        compText.style.opacity = 1;
+      }, 200);
+
+      // Create burst particles (Jhumkas, hearts, sparkles)
+      const symbols = ['✨', '💖', '🌸', '💫', '🪞', '⭐'];
+      const rect = blushBtn.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'burst-particle';
+        p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 150 + 60;
+        const tx = Math.cos(angle) * dist + 'px';
+        const ty = (Math.sin(angle) * dist - 80) + 'px';
+        const tr = (Math.random() * 360) + 'deg';
+
+        p.style.setProperty('--tx', tx);
+        p.style.setProperty('--ty', ty);
+        p.style.setProperty('--tr', tr);
+        p.style.left = originX + 'px';
+        p.style.top = originY + 'px';
+
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1400);
+      }
+    });
+  </script>
+</body>
+</html>
